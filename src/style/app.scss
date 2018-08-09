@@ -33,7 +33,7 @@ ul {
         width: 10%;
       }
       width: calc(90% / 3);
-      text-overflow: ellipsis;
+      word-wrap: break-word;
       overflow: hidden;
     }
   }
