@@ -1,5 +1,10 @@
 const path = require('path');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+
+const devMode = process.env.NODE_ENV !== 'production';
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: "./src/index.html",
@@ -12,6 +17,7 @@ module.exports = {
       path: path.resolve('dist'),
       filename: 'bundled.js'
     },
+    devtool: "source-map",
     module: {
       rules: [
         {
@@ -22,24 +28,42 @@ module.exports = {
           }
         },
         {
-          test: /\.css$/,
-          use: [
-            {
-              loader: "style-loader"
-            },
-            {
-              loader: "css-loader",
-              options: {
-                modules: true,
-                importLoaders: 1,
-                localIdentName: "[name]_[local]_[hash:base64]",
-                sourceMap: true,
-                minimize: true
+          test: /\.(sa|sc|c)ss$/,
+          use: [{
+            loader: devMode ? 'style-loader' : MiniCssExtractPlugin.loader
+          }, {
+              loader: "css-loader", options: {
+                  sourceMap: devMode ? true : false,
+                  minimize: devMode ? false : true,
+                  outputStyle: devMode ?  'expanded' : 'compressed'
               }
-            }
-          ]
+          }, {
+              loader: "sass-loader", options: {
+                  sourceMap: devMode ? true : false,
+                  minimize: devMode ? false : true,
+                  outputStyle: devMode ?  'expanded': 'compressed'
+              }
+          }]
         }
       ]
+    },  
+    optimization: {
+      minimizer: [
+        new UglifyJsPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: true // set to true if you want JS source maps
+        }),
+        new OptimizeCSSAssetsPlugin({})
+      ]
     },
-    plugins: [htmlPlugin]
+    plugins: [
+      htmlPlugin,
+      new MiniCssExtractPlugin({
+        // Options similar to the same options in webpackOptions.output
+        // both options are optional
+      filename: devMode ? '[name].css' : '[name].[hash].css',
+      chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
+      })
+    ]
   };
