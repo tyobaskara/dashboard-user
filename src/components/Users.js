@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import View from '../layout/View';
+import ListUsers from './ListUsers';
 
 const Users = () => (
   <View>
@@ -8,9 +9,8 @@ const Users = () => (
           <title>Users</title>
       </Helmet>
 
-      <div className="container">
-          <h1>Users List</h1>
-      </div>
+      <h1 className="dash-title">Users List</h1>
+      <ListUsers />
   </View>
 )
 
