@@ -1,13 +1,19 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import style from "./style/app.scss";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Route, browserHistory, Switch } from 'react-router-dom';
 
-const Index = () => {
-  return (
-    <div className="container">
-      Hello React!
-    </div>
-  );
-};
+import Users from './components/Users';
+// import { Page404 } from './jsx/component/Page404';
 
-ReactDOM.render(<Index />, document.getElementById("index"));
+const App = () =>(
+    <Router history={browserHistory}>
+        <div>
+            <Switch>
+                <Route exact path={'/'} render={props => <Users {...props} />} />
+                {/* <Route component={Page404}/> */}
+            </Switch>
+        </div>
+    </Router>
+);
+
+ReactDOM.render(<App/>, document.getElementById("index"));
