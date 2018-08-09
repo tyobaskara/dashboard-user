@@ -1,0 +1,37 @@
+{
+  "name": "dashboard-user",
+  "version": "1.0.0",
+  "description": "*User can view list of :\r - list of users\r - list of posts of each user\r - list of albums of each user\r - the detail of each post and its comment\r - list of photos from an album\r - the detail of photo",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --mode development",
+    "start": "webpack-dev-server --mode development --open --hot",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tyobaskara/dashboard-user.git"
+  },
+  "author": "tyo baskara",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tyobaskara/dashboard-user/issues"
+  },
+  "homepage": "https://github.com/tyobaskara/dashboard-user#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^1.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "style-loader": "^0.22.1",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
+  },
+  "dependencies": {
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2"
+  }
+}
