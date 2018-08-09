@@ -5,8 +5,48 @@ html, body {
   font-size: 62.5%; //10px
 }
 body {
+  background: #f5f5f5;
   line-height: 1;
 }
 body div {
   font-size: 1.8rem;
 }
+.hide {
+  display: none !important;
+}
+ul {
+  margin: 0;
+  padding: 0;
+}
+.list-head, .list-body {
+  background: white;
+  display: flex;
+  list-style-type: none;
+  > li {
+    border-bottom: 1px solid #ccc;
+    padding: 15px 5px;
+  }
+  &--4 {
+    > li {
+      text-align: center;
+      &:first-child {
+        width: 10%;
+      }
+      width: calc(90% / 3);
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+}
+.list-head {
+  > li {
+    font-weight: bold;
+  }
+}
+
+.dash-title {
+  text-align: center;
+  padding: 20px 0;
+}
+
+@import './components/UserList';
