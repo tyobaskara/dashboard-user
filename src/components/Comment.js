@@ -52,7 +52,7 @@ export default class Comment extends React.Component {
     })
   }
 
-  postDelete = () => {
+  commentDelete = () => {
     const commentId = this.props.comment.id;
     const updateCommentUrl = 'https://jsonplaceholder.typicode.com/comments/' + commentId;
 
@@ -72,7 +72,7 @@ export default class Comment extends React.Component {
     });
   }
 
-  postEdit = (e) => {
+  commentEdit = (e) => {
     const inputBody = 'commentBody' + this.state.commentId;
     document.getElementById(inputBody).disabled = false;
     this.setState({
@@ -103,10 +103,10 @@ export default class Comment extends React.Component {
             <button className="btn-update" onClick={this.commentUpdate}>Update</button>
             <button className="btn-update" onClick={this.postCancel}>Cancel</button>
           </div> : 
-          <button className="btn-edit" onClick={this.postEdit}>Edit</button> }
+          <button className="btn-edit" onClick={this.commentEdit}>Edit</button> }
 
           <button className="btn-delete" onClick={this.open}>Delete</button>
-          <Confirm open={this.state.open} onCancel={this.close} onConfirm={this.postDelete} />
+          <Confirm open={this.state.open} onCancel={this.close} onConfirm={this.commentDelete} />
         </div>
       </li>
     )
