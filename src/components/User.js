@@ -42,7 +42,7 @@ export default class User extends React.Component {
     const panes = [
       { menuItem: 'Info', render: () => <Tab.Pane attached={false}><UserInfo data={this.props.data}/></Tab.Pane> },
       { menuItem: 'Post', render: () => <Tab.Pane attached={false}><UserPost data={this.props.data}/></Tab.Pane> },
-      { menuItem: 'Album', render: () => <Tab.Pane attached={false}><UserAlbum data={this.props.data}/></Tab.Pane> },
+      { menuItem: 'Album', render: () => <Tab.Pane attached={false}><UserAlbum userId={this.props.data.id}/></Tab.Pane> },
     ]
 
     const UserListDetail = () => <Tab menu={{ pointing: true }} panes={panes} />

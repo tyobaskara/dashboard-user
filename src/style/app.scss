@@ -60,6 +60,19 @@ textarea {
   font-weight: bold;
 }
 
+.accordion {
+  > .title , > .content {
+    border-bottom: 2px solid teal;
+  }
+  > .title {
+    transition: all .2s ease;
+    &:hover {
+      letter-spacing: .05rem;
+    }
+  }
+}
+
 @import './components/UserList';
 @import './components/UserPost';
+@import './components/UserAlbum';
 @import './components/Comments';

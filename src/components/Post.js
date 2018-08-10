@@ -16,10 +16,6 @@ export default class Post extends React.Component {
     activeIndex: -1
   }
 
-  componentDidMount() {
-
-  }
-
   open = () => this.setState({ open: true })
   close = () => this.setState({ open: false })
 
