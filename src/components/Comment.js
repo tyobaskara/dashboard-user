@@ -40,7 +40,14 @@ export default class Comment extends React.Component {
         "Content-type": "application/json; charset=UTF-8"
       }
     })
-    .then(response => response.json())
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        alert('error ' + response.status);
+        throw new Error('Something went wrong');
+      }
+    })
     .then(json => {
       this.setState({
         body: json.body,
@@ -50,6 +57,9 @@ export default class Comment extends React.Component {
       const inputBody = 'commentBody' + this.state.commentId;
       document.getElementById(inputBody).disabled = true;
     })
+    .catch((error) => {
+      alert('error ' + error);
+    });
   }
 
   commentDelete = () => {

@@ -59,13 +59,25 @@ export default class Post extends React.Component {
         "Content-type": "application/json; charset=UTF-8"
       }
     })
-    .then(response => response.json())
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        alert('error ' + response.status);
+        throw new Error('Something went wrong');
+      }
+    })
     .then(json => {
+      console.log(json);
       this.setState({
         title: json.title,
         body: json.body,
         editActive: false
-      });
+      })
+    .catch((error) => {
+      console.log(error);
+      alert('error ' + error);
+    });
 
       const inputTitle = 'postTitle' + this.state.postId;
       const inputBody = 'postBody' + this.state.postId;
