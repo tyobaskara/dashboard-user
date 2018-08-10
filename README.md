@@ -1,4 +1,9 @@
 # dashboard-user
+-- semantic-ui
+-- semantic-ui-react
+-- webpack 4
+-- react js
+
 -- npm install
 -- npm run dev
 

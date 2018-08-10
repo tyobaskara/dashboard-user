@@ -36,7 +36,6 @@
     "optimize-css-assets-webpack-plugin": "^5.0.0",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
-    "semantic-ui": "^2.3.3",
     "semantic-ui-react": "^0.82.2",
     "style-loader": "^0.22.1",
     "uglifyjs-webpack-plugin": "^1.2.7",
