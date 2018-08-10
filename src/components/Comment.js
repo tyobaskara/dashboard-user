@@ -12,11 +12,7 @@ export default class Comment extends React.Component {
     email: this.props.comment.email,
     body: this.props.comment.body,
     editActive: false,
-    open: false,
-  }
-
-  componentDidMount() {
-    
+    open: false
   }
 
   open = () => this.setState({ open: true })

@@ -16,12 +16,11 @@ export default class UserPost extends React.Component {
   }
 
   handleChangeTitle = (e) => {
-    this.setState({ addPostTitle: this.title.value }, () => this.title.focus());
+    this.setState({ addPostTitle: this.postTitle.value }, () => this.postTitle.focus());
   }
   handleChangeBody = (e) => {
-    this.setState({ addPostBody: this.body.value }, () => this.body.focus());
+    this.setState({ addPostBody: this.postBody.value }, () => this.postBody.focus());
   }
-
   handleCreateButton(evt) {
     evt.preventDefault();
     this.addPost();
@@ -87,11 +86,11 @@ export default class UserPost extends React.Component {
         <Modal.Content>
           <Form.Field>
               <label htmlFor="addPostTitle">Title :</label>
-              <input type="text" id="addPostTitle" ref={(node) => {this.title = node}} value={this.state.addPostTitle} onChange={this.handleChangeTitle}/>
+              <input type="text" id="addPostTitle" ref={(node) => {this.postTitle = node}} value={this.state.addPostTitle} onChange={this.handleChangeTitle}/>
           </Form.Field>
           <Form.Field>
               <label htmlFor="addPostBody">Body :</label>
-              <textarea type="text" id="addPostBody" ref={(node) => {this.body = node}} value={this.state.addPostBody} onChange={this.handleChangeBody}/>
+              <textarea type="text" id="addPostBody" ref={(node) => {this.postBody = node}} value={this.state.addPostBody} onChange={this.handleChangeBody}/>
           </Form.Field>
           <Button onClick={(evt) => this.handleCreateButton(evt)}>Add</Button>
         </Modal.Content>
