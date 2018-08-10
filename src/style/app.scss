@@ -44,6 +44,13 @@ ul {
   }
 }
 
+input,textarea {
+  width: 100%;
+}
+textarea {
+  min-height: 100px;
+}
+
 .dash-title {
   text-align: center;
   padding: 20px 0;
