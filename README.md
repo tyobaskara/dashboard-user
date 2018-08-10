@@ -1,4 +1,7 @@
 # dashboard-user
+-- npm install
+-- npm run dev
+
 *User can view list of :
 - list of users
 - list of posts of each user

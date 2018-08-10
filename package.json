@@ -4,9 +4,10 @@
   "description": "*User can view list of :\r - list of users\r - list of posts of each user\r - list of albums of each user\r - the detail of each post and its comment\r - list of photos from an album\r - the detail of photo",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode development",
-    "start": "webpack-dev-server --mode development --open --hot",
-    "build": "webpack --mode production"
+    "dev": "webpack-dev-server --mode development --open --hot",
+    "build": "webpack --mode production",
+    "start": "node server.js",
+    "heroku-postbuild": "webpack --mode production"
   },
   "repository": {
     "type": "git",
@@ -45,6 +46,7 @@
     "webpack-dev-server": "^3.1.5"
   },
   "dependencies": {
+    "express": "^4.16.3",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-helmet": "^5.2.0",
