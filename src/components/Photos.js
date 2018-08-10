@@ -48,6 +48,7 @@ export default class Album extends React.Component {
         <ul className="user-photos">
           {Photos}
         </ul>
+        {!this.state.photos.length && <div className="no-photo">No Photos Found..</div>}
       </div>
     )
   }
