@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Confirm } from 'semantic-ui-react'
+import { Accordion, Button, Confirm } from 'semantic-ui-react';
+import Comments from './Comments';
 
 export default class Post extends React.Component {
   constructor(props) {
@@ -11,7 +12,8 @@ export default class Post extends React.Component {
     title: this.props.post.title,
     body: this.props.post.body,
     editActive: false,
-    open: false
+    open: false,
+    activeIndex: -1
   }
 
   componentDidMount() {
@@ -20,6 +22,14 @@ export default class Post extends React.Component {
 
   open = () => this.setState({ open: true })
   close = () => this.setState({ open: false })
+
+  AccordionClick = (e, titleProps) => {
+    const { index } = titleProps;
+    const { activeIndex } = this.state;
+    const newIndex = activeIndex === index ? -1 : index;
+
+    this.setState({ activeIndex: newIndex })
+  }
 
   titleChange = (e) => {
     this.setState({
@@ -57,8 +67,8 @@ export default class Post extends React.Component {
         editActive: false
       });
 
-      const inputTitle = 'title' + this.state.postId;
-      const inputBody = 'body' + this.state.postId;
+      const inputTitle = 'postTitle' + this.state.postId;
+      const inputBody = 'postBody' + this.state.postId;
       document.getElementById(inputTitle).disabled = true;
       document.getElementById(inputBody).disabled = true;
     })
@@ -85,8 +95,8 @@ export default class Post extends React.Component {
   }
 
   postEdit = (e) => {
-    const inputTitle = 'title' + this.state.postId;
-    const inputBody = 'body' + this.state.postId;
+    const inputTitle = 'postTitle' + this.state.postId;
+    const inputBody = 'postBody' + this.state.postId;
     document.getElementById(inputTitle).disabled = false;
     document.getElementById(inputBody).disabled = false;
     this.setState({
@@ -94,8 +104,8 @@ export default class Post extends React.Component {
     })
   }
   postCancel = (e) => {
-    const inputTitle = 'title' + this.state.postId;
-    const inputBody = 'body' + this.state.postId;
+    const inputTitle = 'postTitle' + this.state.postId;
+    const inputBody = 'postBody' + this.state.postId;
     document.getElementById(inputTitle).disabled = true;
     document.getElementById(inputBody).disabled = true;
     this.setState({
@@ -104,15 +114,17 @@ export default class Post extends React.Component {
   }
 
   render() {
+    const { activeIndex } = this.state;
+
     return (
       <li className="user-posts__post" id={'post' + this.state.postId}>
         <div className="input-wrap">
-          <label htmlFor={'title' + this.state.postId}>Title :</label>
-          <input type="text" value={this.state.title} onChange={this.titleChange} id={'title' + this.state.postId} disabled/>
+          <label htmlFor={'postTitle' + this.state.postId}>Title :</label>
+          <input type="text" value={this.state.title} onChange={this.titleChange} id={'postTitle' + this.state.postId} disabled/>
         </div>
         <div className="input-wrap">
-          <label htmlFor={'body' + this.state.postId}>Body :</label>
-          <textarea value={this.state.body} onChange={this.bodyChange} id={'body' + this.state.postId} disabled/>
+          <label htmlFor={'postBody' + this.state.postId}>Body :</label>
+          <textarea value={this.state.body} onChange={this.bodyChange} id={'postBody' + this.state.postId} disabled/>
         </div>
 
         <div className="user-posts__post-btn">
@@ -127,6 +139,15 @@ export default class Post extends React.Component {
           <button className="btn-delete" onClick={this.open}>Delete</button>
           <Confirm open={this.state.open} onCancel={this.close} onConfirm={this.postDelete} />
         </div>
+
+        <Accordion>
+          <Accordion.Title active={activeIndex === 0} index={0} onClick={this.AccordionClick}>
+          View Comments
+          </Accordion.Title>
+          <Accordion.Content active={activeIndex === 0}>
+            <Comments postId={this.state.postId}/>
+          </Accordion.Content>
+        </Accordion>
       </li>
     )
   }

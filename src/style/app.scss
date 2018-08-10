@@ -55,5 +55,10 @@ textarea {
   text-align: center;
   padding: 20px 0;
 }
+.title {
+  font-weight: bold;
+}
 
 @import './components/UserList';
+@import './components/UserPost';
+@import './components/Comments';

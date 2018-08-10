@@ -31,7 +31,7 @@ export default class UserPost extends React.Component {
   }
 
   render(){
-    const Posts = this.state.posts.map((post, index) => <Post key={index} post={post} postUpdate={this.postUpdate}/>);
+    const Posts = this.state.posts.map((post, index) => <Post key={index} post={post}/>);
 
     return(
       <div>
