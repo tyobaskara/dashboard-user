@@ -89,7 +89,8 @@ export default class Post extends React.Component {
         this.setState({open: false});
       }
       else {
-        console.log(response.status);
+        alert('error ' + response.status);
+        this.setState({open: false});
       }
     });
   }
