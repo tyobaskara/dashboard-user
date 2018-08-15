@@ -1,4 +1,3 @@
-
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers';
@@ -17,3 +16,5 @@ const store = createStore(
 );
 
 export default store;
+
+// Initial Redux Setup - step 4

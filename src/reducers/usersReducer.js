@@ -9,3 +9,5 @@ export default function(state = initialState, action) {
             return state;
     }
 }
+
+// Initial Redux Setup - step 3

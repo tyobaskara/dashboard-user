@@ -22,3 +22,6 @@ const App = () =>(
 );
 
 ReactDOM.render(<App/>, document.getElementById("index"));
+
+// Initial Redux Setup - step 1
+// set provider and load store
