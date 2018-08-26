@@ -3,43 +3,39 @@ import View from '../layout/View';
 import { Helmet } from 'react-helmet';
 import { Container } from 'semantic-ui-react';
 import User from './User';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getUsers } from '../actions/usersActions';
 
-export default class Users extends React.Component {
+class Users extends React.Component {
     state = {
         users: [],
-        getUserFinished: false,
-        isGetError: false
+        usersLoading: true
     }
 
     componentDidMount() {
-      this.getUsers();
+        this.props.getUsers();
     }
 
-    getUsers = () => {
-        const usersUrl = 'https://jsonplaceholder.typicode.com/users';
-
-        fetch(usersUrl).then(response => {
-            if (response.ok) {
-                return response.json();
-            }
-            this.setState({isGetError: true, getUserFinished: true});
-            throw new Error('Request failed!');
-        }, networkError => {
-            console.log(networkError.message);
+    componentWillReceiveProps(newProps) {
+        if (newProps.users.data) {
+            this.setState({ 
+                users: newProps.users.data,
+                usersLoading: newProps.users.usersLoading
+            });
         }
-        ).then(jsonResponse => {
-            if(jsonResponse != null) {
-                this.setState({users: jsonResponse, getUserFinished: true, isGetError: false});
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-            this.setState({isGetError: true, getUserFinished: true});
-        });
     }
   
     render() {
         const Users = this.state.users.map((user, index) => <User key={index} data={user}/>);
+
+        let usersFailedContent;
+
+        if(!this.state.usersLoading && this.state.users.length < 0) {
+            usersFailedContent =  (
+                <div className="text-center"> Something went wrong...</div>
+            )
+        }
 
         return (
             <View>
@@ -49,22 +45,38 @@ export default class Users extends React.Component {
                 
                 <Container>
                     <h1 className="dash-title">User List</h1>
-                    {!this.state.getUserFinished && <div className="text-center">Loading...</div>}
-                    {this.state.isGetError && <div className="text-center">Please try again later...</div>}
+                    {this.state.usersLoading && <div className="text-center">Loading...</div>}
+                    {usersFailedContent}
 
-                    {this.state.getUserFinished &&
-                    <ul className="list-head list-head--4">
-                        <li>Id</li>
-                        <li>Name</li>
-                        <li>Email</li>
-                        <li>Action</li>
-                    </ul>}
-                    <div className="user-list">
-                        <ul>{this.state.getUserFinished && Users}</ul>
-                    </div>
+                    {!this.state.usersLoading && (
+                        <div>
+                            <ul className="list-head list-head--4">
+                                <li>Id</li>
+                                <li>Name</li>
+                                <li>Email</li>
+                                <li>Action</li>
+                            </ul>
+
+                            <div className="user-list">
+                                <ul>{Users}</ul>
+                            </div>
+                        </div>
+                    )}
                 </Container>
             </View>
         );
     }
 
   };
+
+
+Users.propTypes = {
+    getUsers: PropTypes.func.isRequired,
+    users: PropTypes.object.isRequired
+};
+  
+const mapStateToProps = state => ({
+    users: state.users
+});
+
+export default connect(mapStateToProps, { getUsers })(Users);
