@@ -9,6 +9,10 @@ live : https://baskara-dashboard-user.herokuapp.com/
 -- npm install
 -- npm run dev
 
+branchs :
+- with-redux
+- without-redux
+
 *User can view list of :
 - list of users
 - list of posts of each user
