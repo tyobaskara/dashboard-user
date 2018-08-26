@@ -5,6 +5,7 @@ live : https://baskara-dashboard-user.herokuapp.com/
 -- semantic-ui-react
 -- webpack 4
 -- react js
+-- redux
 
 -- npm install
 -- npm run dev
