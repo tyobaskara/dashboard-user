@@ -17,11 +17,10 @@ export const getUsers = () => dispatch => {
       })
     )
     .catch(err => {
-      console.log(err);
       dispatch({
         type: GET_USERS,
         payload: []
-      });
+      })
     });
 };
 
@@ -32,9 +31,4 @@ export const setUsersLoading = () => {
   };
 };
 
-// Clear errors
-export const clearErrors = () => {
-  return {
-    type: CLEAR_ERRORS
-  };
-};
+// Initial Redux Setup - step 5

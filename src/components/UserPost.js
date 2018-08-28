@@ -1,18 +1,36 @@
 import React from 'react';
 import Post from './Post';
 import { Button, Icon, Form, Modal } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getPosts } from '../actions/postsActions';
 
-export default class UserPost extends React.Component {
+class UserPost extends React.Component {
   state = {
       posts: [],
-      status: false,
+      postsLoading: false,
       addPostTitle: '',
       addPostBody: '',
       showModal: false
   }
 
   componentDidMount() {
-    this.getPosts();
+    this.props.getPosts(this.props.data.id);
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (newProps.posts.data.length) {
+      const posts = newProps.posts.data.filter(el => {
+        return el.userId == this.props.data.id;
+      });
+
+      if(posts[0] != null && typeof posts[0] != 'undefined') {
+        this.setState({ 
+            posts: posts[0].userPosts,
+            postsLoading: posts[0].postsLoading
+        });
+      }
+    }
   }
 
   handleChangeTitle = (e) => {
@@ -46,33 +64,12 @@ export default class UserPost extends React.Component {
     })
     .then(response => response.json())
     .then(json => {
-      console.log(json);
       let newPost = this.state.posts;
           newPost.push(json);
       this.setState({posts: newPost})
       
       this.closeModal();
     });
-  }
-
-  getPosts = () => {
-      const userId = this.props.data.id;
-      const usersUrl = 'https://jsonplaceholder.typicode.com/posts?userId=' + userId;
-
-      fetch(usersUrl).then(response => {
-          if (response.ok) {
-              return response.json();
-          }
-          throw new Error('Request failed!');
-      }, networkError => {
-          console.log(networkError.message);
-      }
-      ).then(jsonResponse => {
-          if(jsonResponse != null) {
-            console.log(jsonResponse);
-              this.setState({posts: jsonResponse, status: true});
-          }
-      });
   }
 
   render(){
@@ -109,3 +106,14 @@ export default class UserPost extends React.Component {
     )
   }
 }
+
+UserPost.propTypes = {
+  getPosts: PropTypes.func.isRequired,
+  posts: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+  posts: state.posts
+});
+
+export default connect(mapStateToProps, { getPosts })(UserPost);
