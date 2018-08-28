@@ -1,7 +1,7 @@
 import { GET_USERS, USERS_LOADING } from '../actions/types';
 
 const initialState = {
-    data: [],
+    users: [],
     loading: false
 }
 
@@ -9,7 +9,7 @@ export default function(state = initialState, action) {
     switch(action.type) {
         case GET_USERS:
           return {
-              data: action.payload,
+              users: action.payload,
               loading: false
           }
         case USERS_LOADING:

@@ -8,30 +8,18 @@ import { connect } from 'react-redux';
 import { getUsers } from '../actions/usersActions';
 
 class Users extends React.Component {
-    state = {
-        users: [],
-        usersLoading: true
-    }
-
     componentDidMount() {
         this.props.getUsers();
     }
-
-    componentWillReceiveProps(newProps) {
-        if (newProps.users.data) {
-            this.setState({ 
-                users: newProps.users.data,
-                usersLoading: newProps.users.usersLoading
-            });
-        }
-    }
   
     render() {
-        const Users = this.state.users.map((user, index) => <User key={index} data={user}/>);
+        const { users, loading } = this.props.user;
+
+        const renderUsers = users.map((user, index) => <User key={index} data={user}/>);
 
         let usersFailedContent;
 
-        if(!this.state.usersLoading && this.state.users.length < 0) {
+        if(!loading && users.length < 0) {
             usersFailedContent =  (
                 <div className="text-center"> Something went wrong...</div>
             )
@@ -45,10 +33,10 @@ class Users extends React.Component {
                 
                 <Container>
                     <h1 className="dash-title">User List</h1>
-                    {this.state.usersLoading && <div className="text-center">Loading...</div>}
+                    {loading && <div className="text-center">Loading...</div>}
                     {usersFailedContent}
 
-                    {!this.state.usersLoading && (
+                    {!loading && (
                         <div>
                             <ul className="list-head list-head--4">
                                 <li>Id</li>
@@ -58,7 +46,7 @@ class Users extends React.Component {
                             </ul>
 
                             <div className="user-list">
-                                <ul>{Users}</ul>
+                                <ul>{renderUsers}</ul>
                             </div>
                         </div>
                     )}
@@ -72,11 +60,11 @@ class Users extends React.Component {
 
 Users.propTypes = {
     getUsers: PropTypes.func.isRequired,
-    users: PropTypes.object.isRequired
+    user: PropTypes.object.isRequired
 };
   
 const mapStateToProps = state => ({
-    users: state.users
+    user: state.user
 });
 
 export default connect(mapStateToProps, { getUsers })(Users);

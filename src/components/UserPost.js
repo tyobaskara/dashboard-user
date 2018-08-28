@@ -3,34 +3,17 @@ import Post from './Post';
 import { Button, Icon, Form, Modal } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getPosts } from '../actions/postsActions';
+import { getPosts, addPost } from '../actions/postsActions';
 
 class UserPost extends React.Component {
   state = {
-      posts: [],
-      postsLoading: false,
       addPostTitle: '',
       addPostBody: '',
-      showModal: false
+      showAddPostModal: false
   }
 
   componentDidMount() {
     this.props.getPosts(this.props.data.id);
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (newProps.posts.data.length) {
-      const posts = newProps.posts.data.filter(el => {
-        return el.userId == this.props.data.id;
-      });
-
-      if(posts[0] != null && typeof posts[0] != 'undefined') {
-        this.setState({ 
-            posts: posts[0].userPosts,
-            postsLoading: posts[0].postsLoading
-        });
-      }
-    }
   }
 
   handleChangeTitle = (e) => {
@@ -45,39 +28,28 @@ class UserPost extends React.Component {
   }
 
   closeModal = () => {
-    this.setState({ showModal: false })
+    this.setState({ showAddPostModal: false })
   }
 
   addPost = () => {
     const userId = this.props.data.id;
-    const postUrl = 'https://jsonplaceholder.typicode.com/posts';
-    fetch(postUrl, {
-      method: 'POST',
-      body: JSON.stringify({
-        title: this.state.addPostTitle,
-        body: this.state.addPostBody,
-        userId: userId
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8"
-      }
-    })
-    .then(response => response.json())
-    .then(json => {
-      let newPost = this.state.posts;
-          newPost.push(json);
-      this.setState({posts: newPost})
-      
-      this.closeModal();
+    const newPost = JSON.stringify({
+      title: this.state.addPostTitle,
+      body: this.state.addPostBody,
+      userId: userId
     });
+    this.props.addPost(newPost);
+
+    this.closeModal();
   }
 
   render(){
-    const Posts = this.state.posts.map((post, index) => <Post key={index} post={post}/>);
+    const { posts } = this.props.post;
+    const renderPosts = posts.map((post, index) => <Post key={index} post={post}/>);
 
-    const {showModal} = this.state;
+    const {showAddPostModal} = this.state;
     const ModalAddPost = () => (
-      <Modal closeIcon onClose={this.closeModal} open={showModal} trigger={<Button onClick={() => this.setState({ showModal: true })}>
+      <Modal closeIcon onClose={this.closeModal} open={showAddPostModal} trigger={<Button onClick={() => this.setState({ showAddPostModal: true })}>
         <Icon className='plus' />New Post</Button>}>
         <Modal.Header>Add New Post</Modal.Header>
         <Modal.Content>
@@ -100,7 +72,7 @@ class UserPost extends React.Component {
           <ModalAddPost/>
         </div>
         <ol className="user-posts">
-          {Posts}
+          {renderPosts}
         </ol>
       </div>
     )
@@ -109,11 +81,13 @@ class UserPost extends React.Component {
 
 UserPost.propTypes = {
   getPosts: PropTypes.func.isRequired,
-  posts: PropTypes.object.isRequired
+  post: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-  posts: state.posts
+  post: state.post,
+  errors: state.errors
 });
 
-export default connect(mapStateToProps, { getPosts })(UserPost);
+export default connect(mapStateToProps, { getPosts, addPost })(UserPost);

@@ -30,7 +30,6 @@ export default class UserAlbum extends React.Component {
     })
     .then(jsonResponse => {
         if(jsonResponse != null) {
-          console.log(jsonResponse);
           this.setState({albums: jsonResponse, status: true});
         }
     });

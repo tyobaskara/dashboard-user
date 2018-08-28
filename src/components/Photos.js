@@ -7,7 +7,6 @@ export default class Album extends React.Component {
   }
 
   state = {
-    activeIndex: -1,
     albumId: this.props.albumId,
     photos: [],
     userId: this.props.userId,
@@ -32,16 +31,13 @@ export default class Album extends React.Component {
     })
     .then(jsonResponse => {
         if(jsonResponse != null) {
-          console.log(jsonResponse);
           this.setState({photos: jsonResponse, status: true});
         }
     });
   }
 
   render() {
-    const { activeIndex } = this.state;
-
-    const Photos = this.state.photos.map((photo,index) => <li><img src={photo.thumbnailUrl} alt={photo.title}/></li>)
+    const Photos = this.state.photos.map((photo,index) => <li key={index}><img src={photo.thumbnailUrl} alt={photo.title}/></li>)
 
     return(
       <div>

@@ -6,12 +6,15 @@ import UserPost from './UserPost';
 import UserAlbum from './UserAlbum';
 
 export default class User extends React.Component {
-  constructor(props) {
-    super(props);
+  state = { activeIndex: 0 }
+
+  handleTabChange = (e, { activeIndex }) => {
+    this.setState({ activeIndex });
   }
 
   tabClick = (e) => {
       e.preventDefault();
+      this.setState({activeIndex: 0});
 
       const target = 'user' + this.props.data.id;
       var element = document.getElementById(target);
@@ -45,7 +48,7 @@ export default class User extends React.Component {
       { menuItem: 'Album', render: () => <Tab.Pane attached={false}><UserAlbum userId={this.props.data.id}/></Tab.Pane> },
     ]
 
-    const UserListDetail = () => <Tab menu={{ pointing: true }} panes={panes} />
+    const UserListDetail = () => <Tab activeIndex={this.state.activeIndex} onTabChange={this.handleTabChange} menu={{ pointing: true }} panes={panes} />
 
     return (
       <li>
