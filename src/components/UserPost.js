@@ -44,7 +44,7 @@ class UserPost extends React.Component {
   }
 
   render(){
-    const { posts } = this.props.post;
+    const { posts, loading } = this.props.post;
     const renderPosts = posts.map((post, index) => <Post key={index} post={post}/>);
 
     const {showAddPostModal} = this.state;
@@ -71,9 +71,11 @@ class UserPost extends React.Component {
         <div className="add-new-post text-right">
           <ModalAddPost/>
         </div>
+        {loading.loadingPosts ? (<p style={{padding: '10px'}} align="center">Loading Posts..</p>) : (
         <ol className="user-posts">
           {renderPosts}
         </ol>
+        )}
       </div>
     )
   }

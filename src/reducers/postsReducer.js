@@ -1,6 +1,7 @@
 import {
     GET_POSTS,
     POSTS_LOADING,
+    CLEAR_POSTS,
     ADD_POST,
     DELETE_POST,
     ADD_POST_LOADING,
@@ -33,6 +34,8 @@ export default function (state = initialState, action) {
                     loadingPosts: true
                 }
             }
+        case CLEAR_POSTS:
+            return state;
         case ADD_POST:
             return {
                 ...state,
