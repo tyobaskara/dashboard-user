@@ -3,18 +3,14 @@ import Comment from './Comment';
 import { Button, Icon, Form, Modal } from 'semantic-ui-react';
 
 export default class Comments extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   state = {
-      postId: this.props.postId,
-      comments: [],
-      status: false,
-      addCommentName: '',
-      addCommentEmail: '',
-      addCommentBody: '',
-      showModal: false
+    postId: this.props.postId,
+    comments: [],
+    status: false,
+    addCommentName: '',
+    addCommentEmail: '',
+    addCommentBody: '',
+    showModal: false
   }
 
   componentDidMount() {
@@ -22,13 +18,13 @@ export default class Comments extends React.Component {
   }
 
   handleChangeName = (e) => {
-    this.setState({ addCommentName: this.commentName.value }, () => this.commentName.focus());
+    this.setState({ addCommentName: e.target.value });
   }
   handleChangeEmail = (e) => {
-    this.setState({ addCommentEmail: this.commentEmail.value }, () => this.commentEmail.focus());
+    this.setState({ addCommentEmail: e.target.value });
   }
   handleChangeBody = (e) => {
-    this.setState({ addCommentBody: this.commentBody.value }, () => this.commentBody.focus());
+    this.setState({ addCommentBody: e.target.value });
   }
   handleCreateButton(evt) {
     evt.preventDefault();
@@ -49,15 +45,15 @@ export default class Comments extends React.Component {
         "Content-type": "application/json; charset=UTF-8"
       }
     })
-    .then(response => response.json())
-    .then(json => {
-      console.log(json);
-      let newComment = this.state.comments;
-          newComment.push(json);
-      this.setState({comments: newComment})
-      
-      this.closeModal();
-    });
+      .then(response => response.json())
+      .then(json => {
+        console.log(json);
+        let newComment = this.state.comments;
+        newComment.push(json);
+        this.setState({ comments: newComment })
+
+        this.closeModal();
+      });
   }
 
   closeModal = () => {
@@ -65,53 +61,51 @@ export default class Comments extends React.Component {
   }
 
   getComments = () => {
-      const postId = this.props.postId;
-      const commentsUrl = 'https://jsonplaceholder.typicode.com/comments?postId=' + postId;
+    const postId = this.props.postId;
+    const commentsUrl = 'https://jsonplaceholder.typicode.com/comments?postId=' + postId;
 
-      fetch(commentsUrl).then(response => {
-          if (response.ok) {
-              return response.json();
-          }
-          throw new Error('Request failed!');
-      }, networkError => {
-          console.log(networkError.message);
-      })
+    fetch(commentsUrl).then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error('Request failed!');
+    }, networkError => {
+      console.log(networkError.message);
+    })
       .then(jsonResponse => {
-          if(jsonResponse != null) {
-              this.setState({comments: jsonResponse, status: true});
-          }
+        if (jsonResponse != null) {
+          this.setState({ comments: jsonResponse, status: true });
+        }
       });
   }
 
   render() {
-    const Comments = this.state.comments.map((comment, index) => <Comment key={index} comment={comment} postId={this.props.postId}/>);
+    const Comments = this.state.comments.map((comment, index) => <Comment key={index} comment={comment} postId={this.props.postId} />);
 
-    const {showModal} = this.state;
-    const ModalAddComment = () => (
-      <Modal closeIcon onClose={this.closeModal} open={showModal} trigger={<Button onClick={() => this.setState({ showModal: true })}>
-        <Icon className='plus' />New Comment</Button>}>
-        <Modal.Header>Add New Comment</Modal.Header>
-        <Modal.Content>
-          <Form.Field>
-              <label htmlFor="addCommentName">Name :</label>
-              <input type="text" id="addCommentName" ref={(node) => {this.commentName = node}} value={this.state.addCommentName} onChange={this.handleChangeName}/>
-          </Form.Field>
-          <Form.Field>
-              <label htmlFor="addCommentEmail">Email :</label>
-              <textarea type="text" id="addCommentEmail" ref={(node) => {this.commentEmail = node}} value={this.state.addCommentEmail} onChange={this.handleChangeEmail}/>
-          </Form.Field>
-          <Form.Field>
-              <label htmlFor="addCommentBody">Body :</label>
-              <textarea type="text" id="addCommentBody" ref={(node) => {this.commentBody = node}} value={this.state.addCommentBody} onChange={this.handleChangeBody}/>
-          </Form.Field>
-          <Button onClick={(evt) => this.handleCreateButton(evt)}>Add</Button>
-        </Modal.Content>
-      </Modal>
-    );
+    const { showModal } = this.state;
+
     return (
       <div>
         <div className="add-new-comment text-right">
-          <ModalAddComment/>
+          <Modal closeIcon onClose={this.closeModal} open={showModal} trigger={<Button onClick={() => this.setState({ showModal: true })}>
+            <Icon className='plus' />New Comment</Button>}>
+            <Modal.Header>Add New Comment</Modal.Header>
+            <Modal.Content>
+              <Form.Field>
+                <label htmlFor="addCommentName">Name :</label>
+                <input type="text" id="addCommentName" value={this.state.addCommentName} onChange={this.handleChangeName} />
+              </Form.Field>
+              <Form.Field>
+                <label htmlFor="addCommentEmail">Email :</label>
+                <textarea type="text" id="addCommentEmail" value={this.state.addCommentEmail} onChange={this.handleChangeEmail} />
+              </Form.Field>
+              <Form.Field>
+                <label htmlFor="addCommentBody">Body :</label>
+                <textarea type="text" id="addCommentBody" value={this.state.addCommentBody} onChange={this.handleChangeBody} />
+              </Form.Field>
+              <Button onClick={(evt) => this.handleCreateButton(evt)}>Add</Button>
+            </Modal.Content>
+          </Modal>
         </div>
         <ol className="post-comments">
           {Comments}
