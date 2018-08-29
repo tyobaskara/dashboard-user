@@ -3,10 +3,11 @@ import Post from './Post';
 import { Button, Icon, Form, Modal } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getPosts, addPost } from '../actions/postsActions';
+import { getPosts, addPost, deletePost } from '../actions/postsActions';
 
 class UserPost extends React.Component {
   state = {
+    posts: [],
     addPostTitle: '',
     addPostBody: '',
     showAddPostModal: false
@@ -14,6 +15,16 @@ class UserPost extends React.Component {
 
   componentDidMount() {
     this.props.getPosts(this.props.data.id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.post.posts.length) {
+      const _this = this;
+      _this.setState((state) => ({posts: nextProps.post.posts}), () => {
+        _this.forceUpdate();
+        console.log('forceUpdate');
+      } );
+    }
   }
 
   handleChangeTitle = (e) => {
@@ -43,9 +54,14 @@ class UserPost extends React.Component {
     this.closeModal();
   }
 
+  deletePost = (postId) => {
+    this.props.deletePost(postId);
+  }
+
   render() {
-    const { posts, loading } = this.props.post;
-    const renderPosts = posts.map((post, index) => <Post key={index} post={post} />);
+    const { posts } = this.state;
+    const { loading } = this.props.post;
+    const renderPosts = posts.map((post, index) => <Post key={index} post={post} deletePost={this.deletePost}/>);
 
     const { showAddPostModal } = this.state;
 
@@ -70,7 +86,7 @@ class UserPost extends React.Component {
         </div>
         {loading.loadingPosts ? (<p style={{ padding: '10px' }} align="center">Loading Posts..</p>) : (
           <ol className="user-posts">
-            {renderPosts}
+            { renderPosts }
           </ol>
         )}
       </div>
@@ -80,6 +96,7 @@ class UserPost extends React.Component {
 
 UserPost.propTypes = {
   getPosts: PropTypes.func.isRequired,
+  deletePost: PropTypes.func.isRequired,
   post: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 }
@@ -89,4 +106,4 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps, { getPosts, addPost })(UserPost);
+export default connect(mapStateToProps, { getPosts, addPost , deletePost})(UserPost);

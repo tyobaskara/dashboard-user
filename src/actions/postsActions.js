@@ -7,7 +7,9 @@ import {
   CLEAR_ERRORS,
   GET_ERRORS,
   ADD_POST,
-  ADD_POST_LOADING
+  ADD_POST_LOADING,
+  DELETE_POST_LOADING,
+  DELETE_POST
 } from './types';
 
 // Get Posts
@@ -52,7 +54,29 @@ export const addPost = newPost => dispatch => {
     .catch(err => {
       dispatch({
         type: GET_ERRORS,
-        payload: err.response.data
+        payload: err
+      });
+    });
+};
+
+// Delete Post
+export const deletePost = (postId) => dispatch => {
+  dispatch(clearErrors());
+  dispatch(deletePostLoading());
+
+  axios
+    .delete(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+    .then(res => {
+        dispatch({
+          type: DELETE_POST,
+          payload: postId
+        })
+      }
+    )
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err
       });
     });
 };
@@ -66,6 +90,11 @@ export const setPostsLoading = () => {
 export const addPostLoading = () => {
   return {
     type: ADD_POST_LOADING
+  };
+};
+export const deletePostLoading = () => {
+  return {
+    type: DELETE_POST_LOADING
   };
 };
 

@@ -2,11 +2,7 @@ import React from 'react';
 import { Accordion, Button, Confirm } from 'semantic-ui-react';
 import Comments from './Comments';
 
-export default class Post extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
+class Post extends React.Component {
   state = {
     postId: this.props.post.id,
     title: this.props.post.title,
@@ -64,7 +60,6 @@ export default class Post extends React.Component {
       }
     })
     .then(json => {
-      console.log(json);
       this.setState({
         title: json.title,
         body: json.body,
@@ -84,23 +79,8 @@ export default class Post extends React.Component {
 
   postDelete = () => {
     const postId = this.props.post.id;
-    const updatePostUrl = 'https://jsonplaceholder.typicode.com/posts/' + postId;
-
-    fetch(updatePostUrl, {
-      method: 'DELETE'
-    })
-    .then(response => {
-      console.log(response);
-      const post = 'post' + this.state.postId;
-      if(response.ok) {
-        document.getElementById(post).remove();
-        this.setState({open: false});
-      }
-      else {
-        alert('error ' + response.status);
-        this.setState({open: false});
-      }
-    });
+    this.props.deletePost(postId);
+    this.setState({open: false});
   }
 
   postEdit = (e) => {
@@ -161,3 +141,5 @@ export default class Post extends React.Component {
     )
   }
 }
+
+export default Post;
