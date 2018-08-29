@@ -7,9 +7,9 @@ import { getPosts, addPost } from '../actions/postsActions';
 
 class UserPost extends React.Component {
   state = {
-      addPostTitle: '',
-      addPostBody: '',
-      showAddPostModal: false
+    addPostTitle: '',
+    addPostBody: '',
+    showAddPostModal: false
   }
 
   componentDidMount() {
@@ -17,13 +17,13 @@ class UserPost extends React.Component {
   }
 
   handleChangeTitle = (e) => {
-    this.setState({ addPostTitle: this.postTitle.value }, () => this.postTitle.focus());
+    this.setState({ addPostTitle: e.target.value });
   }
   handleChangeBody = (e) => {
-    this.setState({ addPostBody: this.postBody.value }, () => this.postBody.focus());
+    this.setState({ addPostBody: e.target.value });
   }
-  handleCreateButton(evt) {
-    evt.preventDefault();
+  handleCreateButton = (e) => {
+    e.preventDefault();
     this.addPost();
   }
 
@@ -43,38 +43,35 @@ class UserPost extends React.Component {
     this.closeModal();
   }
 
-  render(){
+  render() {
     const { posts, loading } = this.props.post;
-    const renderPosts = posts.map((post, index) => <Post key={index} post={post}/>);
+    const renderPosts = posts.map((post, index) => <Post key={index} post={post} />);
 
-    const {showAddPostModal} = this.state;
-    const ModalAddPost = () => (
-      <Modal closeIcon onClose={this.closeModal} open={showAddPostModal} trigger={<Button onClick={() => this.setState({ showAddPostModal: true })}>
-        <Icon className='plus' />New Post</Button>}>
-        <Modal.Header>Add New Post</Modal.Header>
-        <Modal.Content>
-          <Form.Field>
-              <label htmlFor="addPostTitle">Title :</label>
-              <input type="text" id="addPostTitle" ref={(node) => {this.postTitle = node}} value={this.state.addPostTitle} onChange={this.handleChangeTitle}/>
-          </Form.Field>
-          <Form.Field>
-              <label htmlFor="addPostBody">Body :</label>
-              <textarea type="text" id="addPostBody" ref={(node) => {this.postBody = node}} value={this.state.addPostBody} onChange={this.handleChangeBody}/>
-          </Form.Field>
-          <Button onClick={(evt) => this.handleCreateButton(evt)}>Add</Button>
-        </Modal.Content>
-      </Modal>
-    );
+    const { showAddPostModal } = this.state;
 
-    return(
+    return (
       <div>
         <div className="add-new-post text-right">
-          <ModalAddPost/>
+          <Modal closeIcon onClose={this.closeModal} open={showAddPostModal} trigger={<Button onClick={() => this.setState({ showAddPostModal: true })}>
+            <Icon className='plus' />New Post</Button>}>
+            <Modal.Header>Add New Post</Modal.Header>
+            <Modal.Content>
+              <Form.Field>
+                <label htmlFor="addPostTitle">Title :</label>
+                <input type="text" id="addPostTitle" value={this.state.addPostTitle} onChange={this.handleChangeTitle} />
+              </Form.Field>
+              <Form.Field>
+                <label htmlFor="addPostBody">Body :</label>
+                <textarea type="text" id="addPostBody" value={this.state.addPostBody} onChange={this.handleChangeBody} />
+              </Form.Field>
+              <Button onClick={this.handleCreateButton}>Add</Button>
+            </Modal.Content>
+          </Modal>
         </div>
-        {loading.loadingPosts ? (<p style={{padding: '10px'}} align="center">Loading Posts..</p>) : (
-        <ol className="user-posts">
-          {renderPosts}
-        </ol>
+        {loading.loadingPosts ? (<p style={{ padding: '10px' }} align="center">Loading Posts..</p>) : (
+          <ol className="user-posts">
+            {renderPosts}
+          </ol>
         )}
       </div>
     )
