@@ -25,3 +25,6 @@ branchs :
 *User can add,edit,delete post
 
 *User cand add,edit,delete comment
+
+personal notes:
+- component key on map function is important to rerendering component

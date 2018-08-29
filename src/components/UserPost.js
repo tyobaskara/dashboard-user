@@ -6,8 +6,11 @@ import { connect } from 'react-redux';
 import { getPosts, addPost, deletePost } from '../actions/postsActions';
 
 class UserPost extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
   state = {
-    posts: [],
     addPostTitle: '',
     addPostBody: '',
     showAddPostModal: false
@@ -15,16 +18,6 @@ class UserPost extends React.Component {
 
   componentDidMount() {
     this.props.getPosts(this.props.data.id);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.post.posts.length) {
-      const _this = this;
-      _this.setState((state) => ({posts: nextProps.post.posts}), () => {
-        _this.forceUpdate();
-        console.log('forceUpdate');
-      } );
-    }
   }
 
   handleChangeTitle = (e) => {
@@ -59,9 +52,8 @@ class UserPost extends React.Component {
   }
 
   render() {
-    const { posts } = this.state;
-    const { loading } = this.props.post;
-    const renderPosts = posts.map((post, index) => <Post key={index} post={post} deletePost={this.deletePost}/>);
+    const { posts, loading } = this.props.post;
+    const renderPosts = posts.map((post) => <Post key={post.id} post={post} deletePost={this.deletePost}/>);
 
     const { showAddPostModal } = this.state;
 

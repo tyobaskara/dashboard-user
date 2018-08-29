@@ -34,7 +34,6 @@ class Post extends React.Component {
     })
   }
 
-
   postUpdate = () => {
     const postId = this.state.postId;
     const updatePostUrl = 'https://jsonplaceholder.typicode.com/posts/' + postId;
