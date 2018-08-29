@@ -9,7 +9,9 @@ import {
   ADD_POST,
   ADD_POST_LOADING,
   DELETE_POST_LOADING,
-  DELETE_POST
+  DELETE_POST,
+  UPDATE_POST,
+  UPDATE_POST_LOADING
 } from './types';
 
 // Get Posts
@@ -59,6 +61,36 @@ export const addPost = newPost => dispatch => {
     });
 };
 
+// Update Post
+export const updatePost = (postId,body) => dispatch => {
+  dispatch(clearErrors());
+  dispatch(updatePostLoading());
+  const options = {
+    method: 'PUT',
+    headers: { 'content-type': "application/json; charset=UTF-8" },
+    data: body,
+    url: `https://jsonplaceholder.typicode.com/posts/${postId}`
+  };
+
+  axios(options)
+    .then(res => {
+        console.log(res);
+        dispatch({
+          type: UPDATE_POST,
+          title: res.data.title,
+          body: res.data.body,
+          postId: postId
+        });
+      }
+    )
+    .catch(err => {
+      dispatch({
+        type: GET_ERRORS,
+        payload: err
+      });
+    });
+};
+
 // Delete Post
 export const deletePost = (postId) => dispatch => {
   dispatch(clearErrors());
@@ -90,6 +122,11 @@ export const setPostsLoading = () => {
 export const addPostLoading = () => {
   return {
     type: ADD_POST_LOADING
+  };
+};
+export const updatePostLoading = () => {
+  return {
+    type: UPDATE_POST_LOADING
   };
 };
 export const deletePostLoading = () => {

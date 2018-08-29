@@ -1,6 +1,9 @@
 import React from 'react';
 import { Accordion, Button, Confirm } from 'semantic-ui-react';
 import Comments from './Comments';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { updatePost } from '../actions/postsActions';
 
 class Post extends React.Component {
   state = {
@@ -36,44 +39,23 @@ class Post extends React.Component {
 
   postUpdate = () => {
     const postId = this.state.postId;
-    const updatePostUrl = 'https://jsonplaceholder.typicode.com/posts/' + postId;
+    const userId = this.props.userId;
 
-    fetch(updatePostUrl, {
-      method: 'PUT',
-      body: JSON.stringify({
-        id: 1,
-        title: this.state.title,
-        body: this.state.body,
-        userId: 1
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8"
-      }
-    })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        alert('error ' + response.status);
-        throw new Error('Something went wrong');
-      }
-    })
-    .then(json => {
-      this.setState({
-        title: json.title,
-        body: json.body,
-        editActive: false
-      })
-    .catch((error) => {
-      console.log(error);
-      alert('error ' + error);
+    const body = JSON.stringify({
+      id: postId,
+      title: this.state.title,
+      body: this.state.body,
+      cancelUpdate: {},
+      userId: userId
     });
 
-      const inputTitle = 'postTitle' + this.state.postId;
-      const inputBody = 'postBody' + this.state.postId;
-      document.getElementById(inputTitle).disabled = true;
-      document.getElementById(inputBody).disabled = true;
-    })
+    this.props.updatePost(postId,body);
+
+    this.setState({editActive: false});
+    const inputTitle = 'postTitle' + this.state.postId;
+    const inputBody = 'postBody' + this.state.postId;
+    document.getElementById(inputTitle).disabled = true;
+    document.getElementById(inputBody).disabled = true;
   }
 
   postDelete = () => {
@@ -83,6 +65,14 @@ class Post extends React.Component {
   }
 
   postEdit = (e) => {
+    const { title , body} = this.state;
+    this.setState({
+      cancelUpdate: {
+        title: title,
+        body: body
+      }
+    });
+
     const inputTitle = 'postTitle' + this.state.postId;
     const inputBody = 'postBody' + this.state.postId;
     document.getElementById(inputTitle).disabled = false;
@@ -92,6 +82,12 @@ class Post extends React.Component {
     })
   }
   postCancel = (e) => {
+    const { cancelUpdate } = this.state;
+    this.setState({
+      title: cancelUpdate.title ? cancelUpdate.title : '',
+      body: cancelUpdate.body ? cancelUpdate.body : '',
+    })
+
     const inputTitle = 'postTitle' + this.state.postId;
     const inputBody = 'postBody' + this.state.postId;
     document.getElementById(inputTitle).disabled = true;
@@ -141,4 +137,13 @@ class Post extends React.Component {
   }
 }
 
-export default Post;
+Post.propTypes = {
+  updatePost: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+  errors: state.errors
+})
+
+export default connect(mapStateToProps, { updatePost })(Post);

@@ -53,7 +53,7 @@ class UserPost extends React.Component {
 
   render() {
     const { posts, loading } = this.props.post;
-    const renderPosts = posts.map((post) => <Post key={post.id} post={post} deletePost={this.deletePost}/>);
+    const renderPosts = posts.map((post) => <Post key={post.id} userId={this.props.data.id} post={post} deletePost={this.deletePost}/>);
 
     const { showAddPostModal } = this.state;
 
