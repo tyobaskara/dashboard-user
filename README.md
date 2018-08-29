@@ -28,3 +28,4 @@ branchs :
 
 personal notes:
 - component key on map function is important to rerendering component
+- us function inside setState if state queueing getting more complex
