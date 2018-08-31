@@ -3,11 +3,13 @@ import Album from './Album';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getAlbums } from '../actions/albumsActions';
+import { getPhotos } from '../actions/photosActions';
 
 class UserAlbum extends React.Component {
   componentDidMount() {
     const { userId } = this.props;
     this.props.getAlbums(userId);
+    this.props.getPhotos();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -32,11 +34,13 @@ class UserAlbum extends React.Component {
 
 UserAlbum.propTypes = {
   getAlbums: PropTypes.func.isRequired,
+  getPhotos: PropTypes.func.isRequired,
   album: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => ({
-  album: state.album
+  album: state.album,
+  photo: state.photo
 });
 
-export default connect(mapStateToProps, { getAlbums })(UserAlbum);
+export default connect(mapStateToProps, { getAlbums, getPhotos })(UserAlbum);

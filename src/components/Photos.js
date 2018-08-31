@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class Photos extends React.Component {
   render() {
@@ -17,10 +19,18 @@ class Photos extends React.Component {
         <ul className="user-photos">
           {loading ? (<li type="none">Loading Photo...</li>) : renderPhotos}
         </ul>
-        {!renderPhotos.length && <div className="no-photo">No Photos Found..</div>}
+        {!renderPhotos.length && !loading && <div className="no-photo">No Photos Found..</div>}
       </div>
     )
   }
 }
 
-export default Photos;
+Photos.propTypes = {
+  photo: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+  photo: state.photo
+})
+
+export default connect(mapStateToProps)(Photos);
