@@ -2,13 +2,11 @@ import axios from 'axios';
 
 import {
     GET_PHOTOS,
-    CLEAR_PHOTOS,
     PHOTOS_LOADING,
 } from './types';
 
 // Get Photos
 export const getPhotos = albumId => dispatch => {
-    dispatch(clearPhotos());
     dispatch(setPhotosLoading());
     axios
         .get(`https://jsonplaceholder.typicode.com/photos`)
@@ -32,12 +30,6 @@ export const getPhotos = albumId => dispatch => {
 export const setPhotosLoading = () => {
     return {
         type: PHOTOS_LOADING
-    };
-};
-
-export const clearPhotos = () => {
-    return {
-        type: CLEAR_PHOTOS
     };
 };
 

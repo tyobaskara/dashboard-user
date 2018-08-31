@@ -15,7 +15,7 @@ class Album extends React.Component {
     const { activeIndex } = this.state;
     const newIndex = activeIndex === index ? -1 : index;
 
-    if(index == 0) {
+    if(newIndex == 0) {
       this.props.getPhotos();
     }
 
