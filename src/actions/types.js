@@ -1,3 +1,7 @@
+export const GET_ALBUMS = 'GET_ALBUMS';
+export const ALBUMS_LOADING = 'ALBUMS_LOADING';
+export const GET_PHOTOS = 'GET_PHOTOS';
+export const PHOTOS_LOADING = 'PHOTOS_LOADING';
 export const GET_USERS = 'GET_USERS';
 export const USERS_LOADING = 'USERS_LOADING';
 export const GET_POSTS = 'GET_POSTS';

@@ -1,49 +1,42 @@
 import React from 'react';
 import Album from './Album';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getAlbums } from '../actions/albumsActions';
 
-export default class UserAlbum extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  state = {
-    albums: [],
-    userId: this.props.userId,
-    status: false
-  }
-
+class UserAlbum extends React.Component {
   componentDidMount() {
-    this.getAlbums();
+    const { userId } = this.props;
+    this.props.getAlbums(userId);
   }
 
-  getAlbums = () => {
-    const {userId} = this.state;
-    const albumsUrl = 'https://jsonplaceholder.typicode.com/albums?userId=' + userId;
-
-    fetch(albumsUrl).then(response => {
-        if (response.ok) {
-            return response.json();
-        }
-        throw new Error('Request failed!');
-    }, networkError => {
-        console.log(networkError.message);
-    })
-    .then(jsonResponse => {
-        if(jsonResponse != null) {
-          this.setState({albums: jsonResponse, status: true});
-        }
-    });
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.album.albums.length) {
+      console.log(nextProps.album);
+    }
   }
 
   render(){
-    const Albums = this.state.albums.map((album,index) => <Album key={index} album={album} />)
+    const { albums, loading } = this.props.album;
+    const renderAlbums = albums.map((album,index) => <Album key={album.id} album={album} />)
 
     return(
       <div>
         <ol className="user-albums">
-          {Albums}
+          {loading ? (<li type="none">Loading...</li>) : renderAlbums}
         </ol>
       </div>
     )
   }
 }
+
+UserAlbum.propTypes = {
+  getAlbums: PropTypes.func.isRequired,
+  album: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+  album: state.album
+});
+
+export default connect(mapStateToProps, { getAlbums })(UserAlbum);
