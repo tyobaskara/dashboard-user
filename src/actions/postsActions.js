@@ -3,7 +3,6 @@ import axios from 'axios';
 import {
   GET_POSTS,
   POSTS_LOADING,
-  CLEAR_POSTS,
   CLEAR_ERRORS,
   GET_ERRORS,
   ADD_POST,
@@ -16,7 +15,6 @@ import {
 
 // Get Posts
 export const getPosts = userId => dispatch => {
-  dispatch(clearPosts());
   dispatch(setPostsLoading());
   axios
     .get(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`)
@@ -138,12 +136,6 @@ export const deletePostLoading = () => {
 export const clearErrors = () => {
   return {
     type: CLEAR_ERRORS
-  };
-};
-
-export const clearPosts = () => {
-  return {
-    type: CLEAR_POSTS
   };
 };
 
