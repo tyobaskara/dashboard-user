@@ -1,51 +1,26 @@
 import React from 'react';
-import Photos from './Photos';
 
-export default class Album extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
-  state = {
-    albumId: this.props.albumId,
-    photos: [],
-    userId: this.props.userId,
-    status: false
-  }
-
-  componentDidMount() {
-    this.getPhotos();
-  }
-
-  getPhotos = () => {
-    const {albumId} = this.state;
-    const photosUrl = 'https://jsonplaceholder.typicode.com/photos?albumId=1' + albumId;
-
-    fetch(photosUrl).then(response => {
-        if (response.ok) {
-            return response.json();
-        }
-        throw new Error('Request failed!');
-    }, networkError => {
-        console.log(networkError.message);
-    })
-    .then(jsonResponse => {
-        if(jsonResponse != null) {
-          this.setState({photos: jsonResponse, status: true});
-        }
-    });
-  }
-
+class Photos extends React.Component {
   render() {
-    const Photos = this.state.photos.map((photo,index) => <li key={index}><img src={photo.thumbnailUrl} alt={photo.title}/></li>)
+    const { albumId } = this.props;
+    const { photos , loading } = this.props.photo;
+    const renderPhotos = photos.map((photo, index) => {
+      if(photo.albumId === albumId) {
+        return (
+          <li key={photo.albumId+'_'+photo.id+photo.title}><img src={photo.thumbnailUrl} alt={photo.title} /></li>
+        )
+      }
+    })
 
-    return(
+    return (
       <div>
         <ul className="user-photos">
-          {Photos}
+          {loading ? (<li type="none">Loading Photo...</li>) : renderPhotos}
         </ul>
-        {!this.state.photos.length && <div className="no-photo">No Photos Found..</div>}
+        {!renderPhotos.length && <div className="no-photo">No Photos Found..</div>}
       </div>
     )
   }
 }
+
+export default Photos;

@@ -1,5 +1,8 @@
+import _ from 'lodash';
+
 import {
     GET_PHOTOS,
+    CLEAR_PHOTOS,
     PHOTOS_LOADING
 } from '../actions/types';
 
@@ -20,6 +23,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: true
+            }
+        case CLEAR_PHOTOS:
+            return {
+                ...state,
+                photos: []
             }
         default:
             return state

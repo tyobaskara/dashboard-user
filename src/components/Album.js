@@ -1,12 +1,11 @@
 import React from 'react';
 import { Accordion, Button, Confirm } from 'semantic-ui-react';
 import Photos from './Photos';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getPhotos } from '../actions/photosActions';
 
-export default class Album extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
+class Album extends React.Component {
   state = {
     activeIndex: -1
   }
@@ -15,6 +14,10 @@ export default class Album extends React.Component {
     const { index } = titleProps;
     const { activeIndex } = this.state;
     const newIndex = activeIndex === index ? -1 : index;
+
+    if(index == 0) {
+      this.props.getPhotos();
+    }
 
     this.setState({ activeIndex: newIndex })
   }
@@ -32,10 +35,21 @@ export default class Album extends React.Component {
           View Photos
           </Accordion.Title>
           <Accordion.Content active={activeIndex === 0}>
-            <Photos albumId={this.props.album.id}/>
+            <Photos photo={this.props.photo} albumId={this.props.album.id}/>
           </Accordion.Content>
         </Accordion>
       </li>
     )
   }
 }
+
+Album.propTypes = {
+  getPhotos: PropTypes.func.isRequired,
+  photo: PropTypes.object.isRequired
+}
+
+const mapStateToProps = state => ({
+  photo: state.photo
+})
+
+export default connect(mapStateToProps, { getPhotos })(Album);
