@@ -19,9 +19,9 @@ class Users extends React.Component {
 
         let usersFailedContent;
 
-        if(!loading && users.length < 0) {
+        if(!loading && users === null) {
             usersFailedContent =  (
-                <div className="text-center"> Something went wrong...</div>
+                <div className="text-center"> Something went wrong... Try again later..</div>
             )
         }
 

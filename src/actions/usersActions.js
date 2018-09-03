@@ -19,7 +19,7 @@ export const getUsers = () => dispatch => {
     .catch(err => {
       dispatch({
         type: GET_USERS,
-        payload: []
+        payload: null
       })
     });
 };

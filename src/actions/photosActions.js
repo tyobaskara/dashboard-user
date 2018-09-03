@@ -20,7 +20,7 @@ export const getPhotos = albumId => dispatch => {
         .catch(err => {
             dispatch({
                 type: GET_PHOTOS,
-                payload: []
+                payload: null
             });
         });
 };

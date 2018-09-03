@@ -27,7 +27,7 @@ export const getPosts = userId => dispatch => {
     .catch(err => {
       dispatch({
         type: GET_POSTS,
-        payload: []
+        payload: null
       });
     });
 };

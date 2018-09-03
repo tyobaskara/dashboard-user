@@ -19,7 +19,7 @@ export const getAlbums = userId => dispatch => {
     .catch(err => {
       dispatch({
         type: GET_ALBUMS,
-        payload: []
+        payload: null
       });
     });
 };
